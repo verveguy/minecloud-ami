@@ -46,13 +46,9 @@ do_start()
 do_stop()
 {
     # Roll log file
-    MSM='/usr/local/bin/msm'
-    if [ -x $MSM ]; then
-        $MSM all logroll
-        find /opt/msm/servers -name 'server.log.offset' -exec rm '{}' ';'
-    else
-        return 2
-    fi
+    find /opt/msm/servers -name '.last-log-offset' -exec rm '{}' ';'
+    su minecraft -c 'mkdir -p /opt/msm/archives/logs/default'
+    su minecraft -c "cp -r /opt/msm/servers/default/logs /opt/msm/archives/logs/default/$(date "+%F-%H-%M-%S")"
 }
 
 case "$1" in

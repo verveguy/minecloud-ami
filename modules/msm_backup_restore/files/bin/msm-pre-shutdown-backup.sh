@@ -12,8 +12,9 @@ VENV_PYTHON='/usr/local/venv/bin/python'
 $MSM stop
 
 # Logroll
-$MSM all logroll
-find /opt/msm/servers -name 'server.log.offset' -exec rm '{}' ';'
+find /opt/msm/servers -name '.last-log-offset' -exec rm '{}' ';'
+su minecraft -c 'mkdir -p /opt/msm/archives/logs/default'
+su minecraft -c "cp -r /opt/msm/servers/default/logs /opt/msm/archives/logs/default/$(date "+%F-%H-%M-%S")"
 
 # Backup working files
 BACKUP_WORKING_FILES=/usr/local/bin/msm-backup-working-files-to-s3.py
